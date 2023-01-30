@@ -21,6 +21,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
     public Response<String> exceptionHandler(SQLIntegrityConstraintViolationException e) {
         log.error(e.getMessage());
+        if (e.getMessage().contains("Duplicate entry")) {
+            String[] s = e.getMessage().split(" ");
+            String msg = s[2] + "已存在";
+            return Response.error(msg);
+        }
+
         return Response.error("添加失败，用户名不能重复");
     }
 }
