@@ -108,7 +108,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
     @Override
     public Response<IPage<Employee>> page(Integer page, Integer pageSize, String name) {
         IPage<Employee> employeePage = new Page<>(page, pageSize);
-        IPage<Employee> employeeIPage = employeeMapper.selectPage(employeePage, new LambdaQueryWrapper<Employee>().like(StringUtils.isNotBlank(name), Employee::getUsername, name));
+        IPage<Employee> employeeIPage = employeeMapper.selectPage(employeePage, new LambdaQueryWrapper<Employee>().like(StringUtils.isNotBlank(name), Employee::getUsername, name).orderByDesc(Employee::getUpdateTime));
         return Response.success(employeeIPage);
     }
 }
