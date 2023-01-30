@@ -1,16 +1,17 @@
 package com.yao.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yao.common.Response;
 import com.yao.entity.Employee;
 import com.yao.service.EmployeeService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 员工管理controller
@@ -35,5 +36,18 @@ public class EmployeeController {
     @PostMapping
     public Response<String> addEmployee(HttpServletRequest request, @RequestBody Employee employee) {
         return employeeService.addEmployee(request, employee);
+    }
+
+    /**
+     * 分页查询员工信息
+     *
+     * @param page     当前页
+     * @param pageSize 页面大小
+     * @param name     名称
+     * @return 员工信息
+     */
+    @GetMapping("/page")
+    public Response<IPage<Employee>> page(@RequestParam Integer page, @RequestParam Integer pageSize, String name) {
+        return employeeService.page(page, pageSize, name);
     }
 }

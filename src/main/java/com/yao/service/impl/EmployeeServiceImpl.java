@@ -1,6 +1,8 @@
 package com.yao.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yao.common.Response;
 import com.yao.entity.Employee;
@@ -15,6 +17,7 @@ import org.springframework.util.DigestUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -92,6 +95,21 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         employee.setStatus(1);
         employeeMapper.insert(employee);
         return Response.success("新增员工成功");
+    }
+
+    /**
+     * 分页查询员工信息
+     *
+     * @param page     当前页
+     * @param pageSize 页面大小
+     * @param name     名称
+     * @return 员工信息
+     */
+    @Override
+    public Response<IPage<Employee>> page(Integer page, Integer pageSize, String name) {
+        IPage<Employee> employeePage = new Page<>(page, pageSize);
+        IPage<Employee> employeeIPage = employeeMapper.selectPage(employeePage, new LambdaQueryWrapper<Employee>().like(StringUtils.isNotBlank(name), Employee::getUsername, name));
+        return Response.success(employeeIPage);
     }
 }
 

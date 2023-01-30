@@ -1,10 +1,13 @@
 package com.yao.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yao.common.Response;
 import com.yao.entity.Employee;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
 * @author yao
@@ -35,4 +38,13 @@ public interface EmployeeService extends IService<Employee> {
      * @return 添加结果
      */
     Response<String> addEmployee(HttpServletRequest request, Employee employee);
+    /**
+     * 分页查询员工信息
+     *
+     * @param page     当前页
+     * @param pageSize 页面大小
+     * @param name     名称
+     * @return 员工信息
+     */
+    Response<IPage<Employee>> page(Integer page, Integer pageSize, String name);
 }
