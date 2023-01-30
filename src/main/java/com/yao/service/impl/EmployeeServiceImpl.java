@@ -55,8 +55,10 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
             return Response.error("用户已被禁用");
         }
         // 6、登录成功，将员工id存入Session
+        request.getSession().setAttribute("employee", oldEmployee.getId());
         return Response.success(oldEmployee);
     }
+
     /**
      * 退出接口
      *

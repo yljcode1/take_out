@@ -12,7 +12,7 @@ import lombok.Data;
 public class Response<T> {
     private Integer code;
     private T data;
-    private String message;
+    private String msg;
 
     public static <T> Response<T> success(T o) {
         Response<T> r = new Response<>();
@@ -23,7 +23,7 @@ public class Response<T> {
 
     public static <T> Response<T> error(String message) {
         Response<T> r = new Response<>();
-        r.message = message;
+        r.msg = message;
         r.code = 0;
         return r;
     }

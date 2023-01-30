@@ -106,7 +106,7 @@
                             localStorage.setItem('userInfo', JSON.stringify(res.data))
                             window.location.href = '/backend/index.html'
                         } else {
-                            this.$message.error(res.message)
+                            this.$message.error(res.msg)
                             this.loading = false
                         }
                     }
