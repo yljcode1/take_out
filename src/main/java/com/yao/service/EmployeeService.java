@@ -27,4 +27,12 @@ public interface EmployeeService extends IService<Employee> {
      * @return 退出信息
      */
     Response<String> doLogout(HttpServletRequest request);
+    /**
+     * 添加员工信息
+     *
+     * @param request  请求
+     * @param employee 员工信息
+     * @return 添加结果
+     */
+    Response<String> addEmployee(HttpServletRequest request, Employee employee);
 }

@@ -2,18 +2,19 @@ package com.yao.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.sun.org.apache.regexp.internal.RE;
 import com.yao.common.Response;
 import com.yao.entity.Employee;
 import com.yao.service.EmployeeService;
 import com.yao.mapper.EmployeeMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -21,6 +22,7 @@ import java.util.Objects;
  * @description 针对表【employee(员工信息)】的数据库操作Service实现
  * @createDate 2023-01-29 20:57:47
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> implements EmployeeService {
@@ -69,6 +71,27 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
     public Response<String> doLogout(HttpServletRequest request) {
         request.getSession().removeAttribute("employee");
         return Response.success("退出成功");
+    }
+
+    /**
+     * 添加员工信息
+     *
+     * @param request  请求
+     * @param employee 员工信息
+     * @return 添加结果
+     */
+    @Override
+    public Response<String> addEmployee(HttpServletRequest request, Employee employee) {
+        // 初始化默认值
+        log.info("新增员工，员工信息:{}", employee.toString());
+        employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes(StandardCharsets.UTF_8)));
+        employee.setCreateTime(new Date());
+        employee.setCreateUser((Long) request.getSession().getAttribute("employee"));
+        employee.setUpdateTime(new Date());
+        employee.setUpdateUser((Long) request.getSession().getAttribute("employee"));
+        employee.setStatus(1);
+        employeeMapper.insert(employee);
+        return Response.success("新增员工成功");
     }
 }
 
