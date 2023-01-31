@@ -1,6 +1,7 @@
 package com.yao.filter;
 
 import com.alibaba.fastjson.JSON;
+import com.yao.common.BaseContext;
 import com.yao.common.Response;
 import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +49,8 @@ public class LoginCheckFilter implements Filter {
         }
         if (request.getSession().getAttribute("employee") != null) {
             log.info("用戶已经登录");
+            Long employeeId = (Long) request.getSession().getAttribute("employee");
+            BaseContext.setCurrentId(employeeId);
             filterChain.doFilter(request, response);
             return;
         }

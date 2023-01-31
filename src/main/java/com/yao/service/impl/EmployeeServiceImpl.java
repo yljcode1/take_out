@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yao.common.BaseContext;
 import com.yao.common.Response;
 import com.yao.entity.Employee;
 import com.yao.service.EmployeeService;
@@ -19,6 +20,7 @@ import org.springframework.util.DigestUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -91,9 +93,9 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         // 初始化默认值
         log.info("新增员工，员工信息:{}", employee.toString());
         employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes(StandardCharsets.UTF_8)));
-        employee.setCreateTime(new Date());
+        employee.setCreateTime(LocalDateTime.now());
         employee.setCreateUser((Long) request.getSession().getAttribute("employee"));
-        employee.setUpdateTime(new Date());
+        employee.setUpdateTime(LocalDateTime.now());
         employee.setUpdateUser((Long) request.getSession().getAttribute("employee"));
         employee.setStatus(1);
         employeeMapper.insert(employee);
@@ -125,10 +127,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
     @Override
     public Response<String> updateStatus(HttpServletRequest request, Employee employee) {
         log.info("修改员工信息");
-        int update = employeeMapper.update(employee, new LambdaUpdateWrapper<Employee>()
-                .set(Employee::getStatus, employee.getStatus())
-                .set(Employee::getUpdateTime, new Date())
-                .set(Employee::getUpdateUser, request.getSession().getAttribute("employee")).eq(Employee::getId, employee.getId()));
+        int update = employeeMapper.update(employee, new LambdaUpdateWrapper<Employee>().set(Employee::getStatus, employee.getStatus()).set(Employee::getUpdateTime, new Date()).set(Employee::getUpdateUser, request.getSession().getAttribute("employee")).eq(Employee::getId, employee.getId()));
         if (update > 0) {
             return Response.success("修改成功");
         }

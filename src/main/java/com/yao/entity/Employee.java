@@ -3,6 +3,7 @@ package com.yao.entity;
 import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import lombok.Data;
@@ -67,24 +68,24 @@ public class Employee implements Serializable {
      * 创建时间
      */
     @TableField(value = "create_time", fill = FieldFill.INSERT)
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
     @TableField(value = "update_time", fill = FieldFill.UPDATE)
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     /**
      * 创建人
      */
-    @TableField(value = "create_user")
+    @TableField(value = "create_user", fill = FieldFill.INSERT)
     private Long createUser;
 
     /**
      * 修改人
      */
-    @TableField(value = "update_user")
+    @TableField(value = "update_user", fill = FieldFill.UPDATE)
     private Long updateUser;
 
     @TableField(exist = false)
