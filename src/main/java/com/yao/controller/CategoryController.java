@@ -1,11 +1,13 @@
 package com.yao.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.sun.org.apache.regexp.internal.RE;
 import com.yao.common.Response;
 import com.yao.entity.Category;
 import com.yao.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -45,5 +47,11 @@ public class CategoryController {
         category.setStatus(1);
         categoryService.save(category);
         return Response.success("添加成功");
+    }
+
+    @DeleteMapping
+    public Response<String> delete(@RequestParam Long id) {
+        categoryService.removeById(id);
+        return Response.success("删除成功");
     }
 }
