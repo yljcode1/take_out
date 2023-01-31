@@ -59,4 +59,11 @@ public interface EmployeeService extends IService<Employee> {
      * @return 提示
      */
     Response<String> updateStatus(HttpServletRequest request, Employee employee);
+    /**
+     * 根据员工id获取到员工信息
+     *
+     * @param id 唯一标识
+     * @return 员工信息
+     */
+    Response<Employee> detailById(Long id);
 }

@@ -62,4 +62,15 @@ public class EmployeeController {
     public Response<String> updateStatus(HttpServletRequest request, @RequestBody Employee employee) {
         return employeeService.updateStatus(request, employee);
     }
+
+    /**
+     * 根据员工id获取到员工信息
+     *
+     * @param id 唯一标识
+     * @return 员工信息
+     */
+    @GetMapping("/{id}")
+    public Response<Employee> detailById(@PathVariable Long id) {
+        return employeeService.detailById(id);
+    }
 }

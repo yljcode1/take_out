@@ -134,6 +134,11 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         }
         return Response.error("修改失败");
     }
+
+    @Override
+    public Response<Employee> detailById(Long id) {
+        return Response.success(employeeMapper.selectById(id));
+    }
 }
 
 
