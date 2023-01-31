@@ -54,10 +54,12 @@ public class EmployeeController {
     /**
      * 修改员工
      *
+     * @param request  请求
+     * @param employee 员工信息
      * @return 提示
      */
     @PutMapping
-    public Response<String> updateStatus(@RequestBody Employee employee) {
-        return employeeService.updateStatus(employee);
+    public Response<String> updateStatus(HttpServletRequest request, @RequestBody Employee employee) {
+        return employeeService.updateStatus(request, employee);
     }
 }

@@ -115,10 +115,20 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         return Response.success(employeeIPage);
     }
 
+    /**
+     * 修改员工
+     *
+     * @param request  请求
+     * @param employee 员工信息
+     * @return 提示
+     */
     @Override
-    public Response<String> updateStatus(Employee employee) {
+    public Response<String> updateStatus(HttpServletRequest request, Employee employee) {
         log.info("修改员工信息");
-        int update = employeeMapper.update(employee, new LambdaUpdateWrapper<Employee>().set(Employee::getStatus, employee.getStatus()).eq(Employee::getId, employee.getId()));
+        int update = employeeMapper.update(employee, new LambdaUpdateWrapper<Employee>()
+                .set(Employee::getStatus, employee.getStatus())
+                .set(Employee::getUpdateTime, new Date())
+                .set(Employee::getUpdateUser, request.getSession().getAttribute("employee")).eq(Employee::getId, employee.getId()));
         if (update > 0) {
             return Response.success("修改成功");
         }
