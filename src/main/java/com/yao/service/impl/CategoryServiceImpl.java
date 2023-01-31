@@ -1,5 +1,6 @@
 package com.yao.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -26,7 +27,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category>
     @Override
     public Response<IPage<Category>> findAll(Integer page, Integer pageSize) {
         IPage<Category> categoryPage = new Page<>(page, pageSize);
-        IPage<Category> categoryIPage = categoryMapper.selectPage(categoryPage, null);
+        IPage<Category> categoryIPage = categoryMapper.selectPage(categoryPage, new LambdaQueryWrapper<Category>().orderByAsc(Category::getSort));
         return Response.success(categoryIPage);
     }
 }

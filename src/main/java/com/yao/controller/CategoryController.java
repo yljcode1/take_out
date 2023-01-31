@@ -6,10 +6,7 @@ import com.yao.entity.Category;
 import com.yao.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 菜单控制层
@@ -34,5 +31,19 @@ public class CategoryController {
     @GetMapping("/page")
     public Response<IPage<Category>> findAll(@RequestParam Integer page, @RequestParam Integer pageSize) {
         return categoryService.findAll(page, pageSize);
+    }
+
+    /**
+     * 新增分类
+     *
+     * @param category 菜单分类
+     * @return 返回值
+     */
+    @PostMapping
+    public Response<String> save(@RequestBody Category category) {
+        log.info("添加category:{}", category.toString());
+        category.setStatus(1);
+        categoryService.save(category);
+        return Response.success("添加成功");
     }
 }

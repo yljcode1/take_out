@@ -1,20 +1,20 @@
 package com.yao.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+
 import lombok.Data;
 
 /**
  * 菜品及套餐分类
+ *
  * @TableName category
  */
-@TableName(value ="category")
+@TableName(value = "category")
 @Data
 public class Category implements Serializable {
     /**
@@ -50,25 +50,25 @@ public class Category implements Serializable {
     /**
      * 创建时间
      */
-    @TableField(value = "create_time")
+    @TableField(value = "create_time", fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
-    @TableField(value = "update_time")
+    @TableField(value = "update_time", fill = FieldFill.UPDATE)
     private LocalDateTime updateTime;
 
     /**
      * 创建人
      */
-    @TableField(value = "create_user")
+    @TableField(value = "create_user", fill = FieldFill.INSERT)
     private Long createUser;
 
     /**
      * 修改人
      */
-    @TableField(value = "update_user")
+    @TableField(value = "update_user", fill = FieldFill.UPDATE)
     private Long updateUser;
 
     @TableField(exist = false)
