@@ -1,7 +1,10 @@
 package com.yao.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yao.common.Response;
@@ -110,6 +113,16 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         IPage<Employee> employeePage = new Page<>(page, pageSize);
         IPage<Employee> employeeIPage = employeeMapper.selectPage(employeePage, new LambdaQueryWrapper<Employee>().like(StringUtils.isNotBlank(name), Employee::getUsername, name).orderByDesc(Employee::getUpdateTime));
         return Response.success(employeeIPage);
+    }
+
+    @Override
+    public Response<String> updateStatus(Employee employee) {
+        log.info("修改员工信息");
+        int update = employeeMapper.update(employee, new LambdaUpdateWrapper<Employee>().set(Employee::getStatus, employee.getStatus()).eq(Employee::getId, employee.getId()));
+        if (update > 0) {
+            return Response.success("修改成功");
+        }
+        return Response.error("修改失败");
     }
 }
 

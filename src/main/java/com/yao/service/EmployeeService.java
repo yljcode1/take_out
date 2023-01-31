@@ -47,4 +47,12 @@ public interface EmployeeService extends IService<Employee> {
      * @return 员工信息
      */
     Response<IPage<Employee>> page(Integer page, Integer pageSize, String name);
+    /**
+     * 禁用员工
+     *
+     * @param id     员工id
+     * @param status 禁用状态
+     * @return 提示
+     */
+    Response<String> updateStatus(Employee employee);
 }

@@ -50,4 +50,14 @@ public class EmployeeController {
     public Response<IPage<Employee>> page(@RequestParam Integer page, @RequestParam Integer pageSize, String name) {
         return employeeService.page(page, pageSize, name);
     }
+
+    /**
+     * 修改员工
+     *
+     * @return 提示
+     */
+    @PutMapping
+    public Response<String> updateStatus(@RequestBody Employee employee) {
+        return employeeService.updateStatus(employee);
+    }
 }
