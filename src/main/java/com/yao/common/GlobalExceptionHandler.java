@@ -29,4 +29,10 @@ public class GlobalExceptionHandler {
 
         return Response.error("添加失败，用户名不能重复");
     }
+
+    @ExceptionHandler(BaseException.class)
+    public Response<String> baseException(BaseException e) {
+        log.error(e.getMessage());
+        return Response.error(e.getMessage());
+    }
 }
