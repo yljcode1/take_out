@@ -5,7 +5,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yao.common.Response;
+import com.yao.dto.DishDTO;
 import com.yao.entity.Dish;
+import com.yao.entity.DishFlavor;
+import com.yao.mapper.DishFlavorMapper;
+import com.yao.service.DishFlavorService;
 import com.yao.service.DishService;
 import com.yao.mapper.DishMapper;
 import lombok.Data;
@@ -13,6 +17,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author yao
@@ -25,6 +33,7 @@ import org.springframework.stereotype.Service;
 public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
         implements DishService {
     private final DishMapper dishMapper;
+    private final DishFlavorService dishFlavorMapper;
 
     /**
      * 菜品列表
@@ -39,6 +48,17 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
         IPage<Dish> dishIPage = new Page<>(page, pageSize);
         IPage<Dish> dishPage = dishMapper.selectPage(dishIPage, new LambdaQueryWrapper<Dish>().like(StringUtils.isNotBlank(name), Dish::getName, name).orderByDesc(Dish::getUpdateTime));
         return Response.success(dishPage);
+    }
+
+    @Override
+    @Transactional
+    public void saveFlavor(DishDTO dishDTO) {
+        this.save(dishDTO);
+        Long dishId = dishDTO.getId();
+        List<DishFlavor> dishFlavorsList = dishDTO.getDishFlavorsList();
+        dishFlavorsList = dishFlavorsList.stream().peek((item) -> item.setDishId(dishId)).collect(Collectors.toList());
+        // 保存菜品口味数据到菜品口味表
+        dishFlavorMapper.saveBatch(dishFlavorsList);
     }
 }
 

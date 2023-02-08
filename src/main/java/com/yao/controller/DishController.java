@@ -2,14 +2,12 @@ package com.yao.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.yao.common.Response;
+import com.yao.dto.DishDTO;
 import com.yao.entity.Dish;
 import com.yao.service.DishService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 菜品控制层
@@ -36,5 +34,18 @@ public class DishController {
     @GetMapping("/page")
     public Response<IPage<Dish>> page(@RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, String name) {
         return dishService.page(page, pageSize, name);
+    }
+
+    /**
+     * 添加菜品
+     *
+     * @param dishDTO DTO
+     * @return 添加结果
+     */
+    @PostMapping
+    public Response<String> save(@RequestBody DishDTO dishDTO) {
+        // 操作两张表
+        dishService.saveFlavor(dishDTO);
+        return null;
     }
 }
